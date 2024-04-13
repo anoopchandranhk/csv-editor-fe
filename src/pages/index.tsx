@@ -4,8 +4,8 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 
+import Layout from '@/app/layout';
 import Button from '@/components/Button';
 import FileUploadButton from '@/components/FileUploadButton';
 
@@ -76,8 +76,10 @@ const CsvEditorPage = () => {
   const [postApiRes, setPostApiRes] = useState<string>('');
   const [csvFiles, setCsvFiles] = useState<CsvFile[]>([]);
 
-  // const posts = useSelector((state: any) => state.posts);
-  // const dispatch = useDispatch();
+  const [incrementAmount, setIncrementAmount] = useState('2');
+
+  const incrementValue = Number(incrementAmount) || 0;
+
   // Function to fetch CSV files from the API
   const fetchCsvFiles = async () => {
     try {
@@ -107,38 +109,30 @@ const CsvEditorPage = () => {
   }, []);
 
   return (
-    <Container>
-      <Header>Manage CSVs</Header>
-      {/* <Button onClick={fetchCsvFiles}>List</Button> */}
-      {/* <div>API Res: {getApiRes}</div> */}
-      <CsvList>
-        <div>
-          <p>{csvFiles.length === 0 ? 'Start by uploading a file' : 'Click the edit button to edit a CSV'}</p>
-          <div css={{ display: 'flex' }}>
-            {csvFiles.map((file: CsvFile) => (
-              <div css={CsvFileEditCss.self} key={file.id}>
-                <div css={CsvFileEditCss.title}>{file.fileName}</div>
-                <Button onClick={fetchCsvFiles}>Edit</Button>
-              </div>
-            ))}
+    <Layout>
+      <Container>
+        <Header>Manage CSVs</Header>
+        {/* <Button onClick={fetchCsvFiles}>List</Button> */}
+        {/* <div>API Res: {getApiRes}</div> */}
+        <CsvList>
+          <div>
+            <p>{csvFiles.length === 0 ? 'Start by uploading a file' : 'Click the edit button to edit a CSV'}</p>
+            <div css={{ display: 'flex' }}>
+              {csvFiles.map((file: CsvFile) => (
+                <div css={CsvFileEditCss.self} key={file.id}>
+                  <div css={CsvFileEditCss.title}>{file.fileName}</div>
+                  <Button onClick={fetchCsvFiles}>Edit</Button>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-        <Button onClick={callPostApi}>Upload CSV</Button>
-        <FileUploadButton />
-      </CsvList>
-      <div>API Res: {postApiRes}</div>
-      {/* {posts ? (
-        posts.map((post: any) => (
-          <div key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.description}</p>
-          </div>
-        ))
-      ) : (
-        <p>No posts found.</p>
-      )} */}
-      {/* Content can be added here */}
-    </Container>
+          <Button onClick={callPostApi}>Upload CSV</Button>
+          <FileUploadButton />
+        </CsvList>
+        <div>API Res: {postApiRes}</div>
+        {/* Content can be added here */}
+      </Container>
+    </Layout>
   );
 };
 
